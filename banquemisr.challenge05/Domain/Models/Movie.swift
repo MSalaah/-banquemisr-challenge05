@@ -15,13 +15,13 @@ enum MovieType: String {
 
 struct ListResponse: Codable {
     var dates: Dates?
-    var page: Int
-    var results: [Movie]
+    var page: Int?
+    var results: [Movie]?
 }
 
 struct Dates: Codable {
-    var maximum: String
-    var minimum: String
+    var maximum: String?
+    var minimum: String?
 }
 
 struct Movie: Codable {

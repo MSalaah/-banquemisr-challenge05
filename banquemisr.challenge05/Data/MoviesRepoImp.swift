@@ -9,14 +9,11 @@ import Foundation
 class MoviesRepoImp: MoviesRepoContract {
     
     private let apiClient: APIProtocol
-    
     init(apiClient: APIProtocol) {
         self.apiClient = apiClient
     }
     func fetchMovies(type: MovieType, completion: ((Result<ListResponse?, NetworkError>) -> Void)?) {
         guard let urlReq = prepareUrl(path: "/movie/\(type.rawValue)") else { return }
-        //        --url 'https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1' \
-        //        apiClient?.executeRequest(urlRequest: urlRequest, completion: completion)
         apiClient.executeRequest(urlRequest: urlReq) { result in
             completion?(result)
         }

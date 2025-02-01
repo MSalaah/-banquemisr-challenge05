@@ -78,9 +78,7 @@ extension UIImageView {
                 activityIndicator.stopAnimating()
             }
             return
-        }
-        
-        guard let url = URL(string: urlString) else { return }
+        }        
         URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
             if error != nil {
                 print(error ?? "")
