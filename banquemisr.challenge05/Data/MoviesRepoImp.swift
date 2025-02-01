@@ -13,7 +13,6 @@ class MoviesRepoImp: MoviesRepoContract {
     init(apiClient: APIProtocol) {
         self.apiClient = apiClient
     }
-    
     func fetchMovies(type: MovieType, completion: ((Result<ListResponse?, NetworkError>) -> Void)?) {
         guard let urlReq = prepareUrl(path: "/movie/\(type.rawValue)") else { return }
         //        --url 'https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1' \
@@ -22,30 +21,9 @@ class MoviesRepoImp: MoviesRepoContract {
             completion?(result)
         }
     }
-    
-    func fetchPopularMovies(completion: ((Result<ListResponse?, NetworkError>) -> Void)?) {
-        guard let urlRequest = prepareUrl(path: "/movie/popular") else { return }
-        apiClient.executeRequest(urlRequest: urlRequest) { result in
-            completion?(result)
-        }
-    }
-    
-    func fetchUpcomingMovies(completion: ((Result<ListResponse?, NetworkError>) -> Void)?) {
-        guard let urlRequest = prepareUrl(path: "/movie/upcoming") else { return }
-        apiClient.executeRequest(urlRequest: urlRequest) { result in
-            completion?(result)
-        }
-    }
-    
-    func fetchNowPlayingMovies(completion: ((Result<ListResponse?, NetworkError>) -> Void)?) {
-        guard let urlRequest = prepareUrl(path: "/movie/now_playing") else { return }
-        apiClient.executeRequest(urlRequest: urlRequest) { result in
-            completion?(result)
-        }
-    }
-    
     func fetchMovieDetails(movieId: Int, completion: ((Result<MovieDetailsResponse?, NetworkError>) -> Void)?) {
-        guard let urlRequest = prepareUrl(path: "/movie") else { return }
+        let apiUrl : String = "/movie/\(movieId)"
+        guard let urlRequest = prepareUrl(path: apiUrl) else { return }
         apiClient.executeRequest(urlRequest: urlRequest) { result in
             completion?(result)
         }

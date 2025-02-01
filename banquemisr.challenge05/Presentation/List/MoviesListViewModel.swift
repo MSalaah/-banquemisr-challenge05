@@ -5,15 +5,21 @@
 //  Created by Moe Salah  on 31/01/2025.
 //
 
-protocol MoviesListViewModelProtocol {
+import Foundation
+
+protocol MoviesListViewModelProtocol: ViewProtocol {
     func didSelectTab(type: MovieType)
-    func didSelectMovie()
-    var  onError: (() -> Void)? { get set }
-    var  showLoading: (() -> Void)? { get set }
-    var  hideLoading: (() -> Void)? { get set }
+    func didSelectMovie(index: IndexPath)
+    var  moviesList: [Movie] { get set }
+    var  onListFetched: (() -> Void)? {get set}
 }
 
 class MoviesListViewModel: MoviesListViewModelProtocol {
+    var onListFetched: (() -> Void)?
+    
+    var moviesList: [Movie] = []
+    
+    
     var showLoading: (() -> Void)?
     var hideLoading: (() -> Void)?
     var onError: (() -> Void)?
@@ -32,8 +38,10 @@ class MoviesListViewModel: MoviesListViewModelProtocol {
         fetchList()
     }
     
-    func didSelectMovie() {
-        //Navigate to details screen
+    func didSelectMovie(index: IndexPath) {
+        // Navigate to details screen
+        let movie = moviesList[index.row]
+
     }
     
     private func fetchList() {
@@ -43,8 +51,10 @@ class MoviesListViewModel: MoviesListViewModelProtocol {
             self.hideLoading?()
             switch result {
             case .success(let response):
-                print(response?.results.count)
-            case .failure:
+                moviesList = response?.results ?? []
+                onListFetched?()
+            case .failure (let error):
+                print(error)
                 self.onError?()
             }
         }
